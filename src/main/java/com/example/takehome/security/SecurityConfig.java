@@ -15,8 +15,8 @@ public class SecurityConfig
 		http
 			.cors().and()
 			.csrf().disable().authorizeHttpRequests()
-			.requestMatchers("/api/**").permitAll()
-			.anyRequest().authenticated()
+			.requestMatchers("/api/*").permitAll()
+			.requestMatchers("login").authenticated()
 			.and()
 			.formLogin();
 		return http.build();

@@ -5,3 +5,27 @@ spring:
     user:
       name: test
       password: test
+  cache:
+    jcache:
+      config: ehcache.xml
+
+bucket4j:
+  enabled: true
+  filters: # each config entry creates one servlet filter or other filter
+    - cache-name: buckets # create new servlet filter with bucket4j configuration
+      url: /api*
+      rate-limits:
+      - skip-condition: "@securityService.username() == null"
+        bandwidths: # maximum of 5 requests within 1 seconds
+          - capacity: 5
+            time: 1
+            unit: secconds
+    - cache-name: buckets
+      url: /api*
+      rate-limits:
+        - skip-condition: "@securityService.username() != null"
+          expression: "@securityService.username()?: getRemoteAddr()" # use the username as key. if authenticated use the ip address
+          bandwidths:
+            - capacity: 20
+              time: 1
+              unit: secconds
