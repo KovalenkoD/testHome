@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: "takehome"
+  security:
+    user:
+      name: test
+      password: test
